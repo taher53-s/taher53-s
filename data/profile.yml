@@ -1,0 +1,133 @@
+# ─────────────────────────────────────────────────────────────
+#  PROFILE SOURCE OF TRUTH
+#  Everything human-editable about this profile lives here.
+#  `python3 scripts/build_readme.py` renders the SYSTEM STATUS
+#  block inside README.md from this file. Everything else in the
+#  README is hand-authored. See PROFILE_MAINTENANCE.md.
+# ─────────────────────────────────────────────────────────────
+
+identity:
+  name: "Taher Sohagpurwala"
+  handle: "taher53-s"
+  role: "Full-Stack Product Engineer · AI/ML"
+  location: "Mumbai, India"
+  positioning: >-
+    I build complete products and I ship them — 3D web experiences,
+    AI-powered apps, big-data platforms, macOS utilities, and developer
+    tooling. Not demos: deployed, tested, used-in-real-life systems.
+
+# Rendered into README.md between the <!-- @now --> markers.
+now:
+  building:
+    - "FORGE — an AI-powered performance ledger (gym + nutrition), Next.js 16 + NVIDIA GLM + Supabase"
+    - "Playable Portfolio — a drivable 3D island where every district is a real project"
+  learning:
+    - "WebGPU render pipelines & compute-driven effects (shipped with fallbacks in the 3D portfolio)"
+    - "Agentic workflows — multi-skill agent systems wired into real tooling"
+  exploring:
+    - "Local-first product architecture (offline-first PWA + server-synced Postgres)"
+    - "Procedural generation — terrain, audio and worlds built entirely from code"
+  open_to:
+    - "Product engineering internships / junior roles (full-stack, AI/ML)"
+    - "Freelance product builds — end to end, design to deployment"
+
+links:
+  github: "https://github.com/taher53-s"
+  portfolio: "https://taher-portfolio-3d.vercel.app"
+  # add a verified LinkedIn / email URL here when you want it in the profile
+
+# Featured systems — ordered. Keep to 6 max.
+# live: public URL (verified). source: public repo URL (omit if private).
+# private: true → renders a "private build" note instead of a source link.
+featured:
+  - name: "Playable Portfolio"
+    tagline: "Don't scroll a résumé. Drive it."
+    what: >-
+      A drivable 3D island where nine districts hold 16 interactive exhibits —
+      every district, terminal and monument is a real project. Arcade kart physics
+      on Rapier WASM, WebGPU renderer with WebGL2 fallback, and the entire world —
+      terrain, roads, buildings, sounds, sky — generated from code. Zero downloaded
+      3D models, zero audio files.
+    stack: "TypeScript · three.js (WebGPU) · Rapier · Vite · Web Audio"
+    live: "https://taher-portfolio-3d.vercel.app"
+    source: ""
+    private: true
+  - name: "FORGE — Performance Ledger"
+    tagline: "Paste today's note. See real progress. In under 20 seconds."
+    what: >-
+      A local-first gym & nutrition ledger that parses messy Apple Notes into
+      structured progress, then adds grounded AI insights via a server-only
+      NVIDIA GLM gateway with zod-validated responses. Supabase Postgres behind
+      a server-only API gateway, 37 unit + 20 e2e tests, PWA, and charts
+      hand-built in SVG — no chart library.
+    stack: "Next.js 16 · React 19 · TypeScript (strict) · Supabase · NVIDIA AI · Vitest · Playwright"
+    live: "https://gym-nutrition-khaki.vercel.app"
+    source: ""
+    private: true
+  - name: "HunarMart"
+    tagline: "A production-shaped community marketplace — 120+ routes."
+    what: >-
+      A two-sided marketplace for home chefs and makers: merchant onboarding
+      with KYC/FSSAI approvals, storefronts, multi-maker cart with UPI/COD,
+      order tracking, QR-scan attribution, loyalty program, and separate
+      merchant + ops consoles. All 120+ routes prerendered, with the codebase
+      mapped directly to its business plan and P0–P5 roadmap.
+    stack: "Next.js · Tailwind v4 · Recharts · TypeScript"
+    live: ""
+    source: ""
+    private: true
+  - name: "Security Breach Simulator"
+    tagline: "Train incident response against realistic breach scenarios."
+    what: >-
+      A professional-grade security trainer: seven breach scenario families
+      (ransomware, zero-day, supply chain, insider threat…), deterministic
+      seeded generation, A–F scoring across detection time, action efficiency
+      and policy compliance, trend dashboards and JSONL audit logging.
+      Containerized with a REST API and full type annotations.
+    stack: "Python · FastAPI · Docker · GitHub Actions"
+    live: ""
+    source: "https://github.com/taher53-s/security-breach-simulator"
+    private: false
+  - name: "nvim-plugin-marketplace"
+    tagline: "An in-editor marketplace built from raw buffers."
+    what: >-
+      A Neovim plugin marketplace UI built entirely with Lua buffers and
+      floating windows — no framework, just the editor's own primitives.
+      A custom :Marketplace command opens a floating-window interface for
+      discovering plugins without leaving vim.
+    stack: "Lua · Neovim API"
+    live: ""
+    source: "https://github.com/taher53-s/nvim-plugin-marketplace"
+    private: false
+  - name: "Stash"
+    tagline: "A temporary shelf for your files — shake to summon."
+    what: >-
+      An open-source macOS utility: drag files, shake the mouse, and a shelf
+      appears to stash them until you reach the destination folder. Global
+      shake detection, native SwiftUI interface, built with Swift Package
+      Manager — no Xcode required. Runs entirely locally, no network.
+    stack: "Swift · SwiftUI · SPM"
+    live: ""
+    source: "https://github.com/taher53-s/Stash"
+    private: false
+
+# Deployed systems — verified live URLs only.
+deployed:
+  - name: "International Paints"
+    what: "Production client site for a Mumbai paints business"
+    url: "https://international-paints.vercel.app"
+  - name: "Caretakers PMC"
+    what: "Production client site for a Mumbai property-services business"
+    url: "https://caretakerspmc.vercel.app"
+  - name: "Period Tracker"
+    what: "A shipped cycle-tracking web app — Android + PWA"
+    url: "https://period-tracker-jade.vercel.app"
+  - name: "FoodLog"
+    what: "A personal food & restaurant journal with analytics"
+    url: "https://food-journal-phi.vercel.app"
+  - name: "Kronos"
+    what: "An entertainment tracker — every story you've lived through"
+    url: "https://kronos-kohl-nu.vercel.app"
+  - name: "Playful Portfolio"
+    what: "The drivable 3D portfolio island"
+    url: "https://taher-portfolio-3d.vercel.app"

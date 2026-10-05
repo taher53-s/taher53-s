@@ -1,0 +1,15 @@
+# secrets must never live in this repo
+.env
+.env.*
+*.pem
+*.key
+
+# python
+__pycache__/
+*.pyc
+.venv/
+
+# os / tooling noise
+.DS_Store
+generated-media/
+node_modules/
