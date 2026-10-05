@@ -1,0 +1,55 @@
+name: Refresh profile activity
+
+on:
+  schedule:
+    - cron: "17 0 * * 1" # Mondays 00:17 UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: profile-update
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install single dependency
+        run: pip install pyyaml
+
+      - name: Regenerate activity visualization
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 scripts/generate_activity.py
+        # On failure the script exits non-zero and KEEPS the previous asset —
+        # this step failing must not block a valid commit of other changes,
+        # so continue, but the job will still be marked failing.
+        continue-on-error: false
+
+      - name: Re-render status block from data/profile.yml
+        run: python3 scripts/build_readme.py
+
+      - name: Validate everything
+        run: python3 scripts/validate.py
+
+      - name: Commit only when something changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet; then
+            echo "Nothing changed — no commit needed."
+          else
+            git add -A
+            git commit -m "chore(profile): refresh activity visualization [skip ci]"
+            git push
+          fi
