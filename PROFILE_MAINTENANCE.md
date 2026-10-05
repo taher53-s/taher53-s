@@ -37,7 +37,13 @@ README is hand-authored — copy an existing block, keep the same
 Those live on GitHub itself, not in this repo:
 
 ```bash
-gh api -X PATCH user -f bio="…" -f location="…" -f blog="…"
+# one-time: the profile API needs the "user" scope
+gh auth refresh -h github.com -s user
+
+gh api -X PATCH user \
+  -f bio="Full-stack product engineer · AI/ML student in Mumbai. I ship complete products — 3D web, AI-powered apps, big-data platforms, macOS utilities." \
+  -f location="Mumbai, India" \
+  -f blog="https://taher-portfolio-3d.vercel.app"
 ```
 
 ### Add a social link
