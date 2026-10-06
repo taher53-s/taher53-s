@@ -96,7 +96,7 @@ Generated from the GitHub GraphQL API by [`scripts/generate_activity.py`](script
 
 ## `$ contact`
 
-[**github.com/taher53-s**](https://github.com/taher53-s) · [**portfolio — drivable**](https://taher-portfolio-3d.vercel.app) · open a discussion on any repo above
+[**github.com/taher53-s**](https://github.com/taher53-s) · [**portfolio — drivable**](https://taher-portfolio-3d.vercel.app) · [**tahersohagpurwala@gmail.com**](mailto:tahersohagpurwala@gmail.com) · open a discussion on any repo above
 
 ---
 
