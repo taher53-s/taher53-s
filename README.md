@@ -71,7 +71,6 @@ Real URLs, visited by real people — production client work included:
 | **Caretakers PMC** | production client site — Mumbai property services | [visit](https://caretakerspmc.vercel.app) |
 | **Playable Portfolio** | the drivable 3D portfolio island | [visit](https://taher-portfolio-3d.vercel.app) |
 | **FORGE** | AI-powered performance ledger | [visit](https://gym-nutrition-khaki.vercel.app) |
-| **Period Tracker** | shipped cycle-tracking app, Android + PWA | [visit](https://period-tracker-jade.vercel.app) |
 | **FoodLog** | food & restaurant journal with analytics | [visit](https://food-journal-phi.vercel.app) |
 | **Kronos** | entertainment tracker — every story you've lived through | [visit](https://kronos-kohl-nu.vercel.app) |
 
