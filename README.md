@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/hero.svg" alt="Boot card: Taher Sohagpurwala — full-stack product engineer, AI/ML. Systems: 7 live, 20+ shipped. Status: shipping." width="100%">
+  <img src="assets/hero.svg" alt="Boot card: Taher Sohagpurwala — full-stack product engineer, AI/ML. All systems shipping: 6 live deployments, 20+ shipped, Mumbai." width="100%">
 </p>
 
 ## `$ whoami`
