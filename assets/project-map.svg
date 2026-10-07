@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1520" height="780" viewBox="0 0 1520 780" role="img" aria-labelledby="mapTitle mapDesc" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+  <title id="mapTitle">The ecosystem — Taher's systems map</title>
+  <desc id="mapDesc">A systems map of six built products connected to a core: Playable Portfolio (3D creative, live), FORGE performance ledger (AI product, live), HunarMart (marketplace, private build), Security Breach Simulator (security tooling, open source), nvim-plugin-marketplace (Neovim tooling, open source), Stash (native macOS, open source).</desc>
+
+  <style>
+    .bg        { fill:#ffffff; }
+    .t-primary { fill:#1F2328; }
+    .t-micro   { fill:#8A93A0; }
+    .accent    { fill:#D9482B; }
+    .core      { fill:#D9482B; }
+    .core-ring { stroke:#D9482B; stroke-opacity:.45; fill:none; stroke-width:1.25; }
+    .link      { stroke:#1F2328; stroke-opacity:.13; fill:none; stroke-width:1; }
+    .node-live { fill:#D9482B; }
+    .node-src  { fill:#1F2328; fill-opacity:.55; }
+    .node-priv { stroke:#1F2328; stroke-opacity:.45; fill:none; stroke-width:1.25; }
+    .ping      { fill:none; stroke:#D9482B; stroke-width:1.5; opacity:0; animation: ping 1.0s ease-out forwards; }
+    .mono      { font-family:ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace; }
+
+    @media (prefers-color-scheme: dark) {
+      .bg        { fill:#0D1117; }
+      .t-primary { fill:#E8EDF2; }
+      .t-micro   { fill:#6E7681; }
+      .accent    { fill:#FF8A66; }
+      .core      { fill:#FF8A66; }
+      .core-ring { stroke:#FF8A66; stroke-opacity:.5; }
+      .link      { stroke:#E8EDF2; stroke-opacity:.14; }
+      .node-live { fill:#FF8A66; }
+      .node-src  { fill:#E8EDF2; fill-opacity:.6; }
+      .node-priv { stroke:#E8EDF2; stroke-opacity:.5; }
+      .ping      { stroke:#FF8A66; }
+    }
+
+    .fade  { opacity:1; animation: rise .6s cubic-bezier(.2,.7,.3,1) backwards; }
+    .draw  { stroke-dasharray:100 100; stroke-dashoffset:0; animation: draw 1.1s cubic-bezier(.4,.1,.2,1) backwards; }
+
+    @keyframes rise { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes draw { from { stroke-dashoffset:100; } to { stroke-dashoffset:0; } }
+    @keyframes ping { from { opacity:.55; transform:scale(1); } to { opacity:0; transform:scale(2.6); } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .fade, .draw { animation: none; }
+      .ping { animation: none; opacity: 0; }
+    }
+  </style>
+
+  <rect class="bg" width="1520" height="780"/>
+
+  <text class="mono t-micro fade" style="animation-delay:.05s" x="96" y="62" font-size="11" font-weight="600" letter-spacing="2.5">SYSTEMS MAP</text>
+
+  <!-- ══ connectors: core → systems (draw once) ═════════════ -->
+  <path class="link draw" pathLength="100" style="animation-delay:.35s"  d="M 330 380 C 480 320, 560 200, 686 142"/>
+  <path class="link draw" pathLength="100" style="animation-delay:.5s"   d="M 332 385 C 600 355, 860 295, 1106 264"/>
+  <path class="link draw" pathLength="100" style="animation-delay:.65s"  d="M 332 390 C 500 402, 680 403, 836 400"/>
+  <path class="link draw" pathLength="100" style="animation-delay:.8s"   d="M 334 398 C 700 442, 1100 472, 1354 497"/>
+  <path class="link draw" pathLength="100" style="animation-delay:.95s"  d="M 326 402 C 440 486, 520 566, 626 610"/>
+  <path class="link draw" pathLength="100" style="animation-delay:1.1s"  d="M 330 400 C 600 525, 880 625, 1044 676"/>
+
+  <!-- ══ core ═══════════════════════════════════════════════ -->
+  <circle class="core-ring fade" style="animation-delay:.15s" cx="300" cy="390" r="13"/>
+  <circle class="core fade" style="animation-delay:.15s" cx="300" cy="390" r="5.5"/>
+  <text class="fade t-primary" style="animation-delay:.25s" x="300" y="440" text-anchor="middle" font-size="21" font-weight="800" letter-spacing="3">TAHER</text>
+  <text class="mono fade t-micro" style="animation-delay:.35s" x="300" y="464" text-anchor="middle" font-size="10.5" font-weight="600" letter-spacing="2">SYSTEMS CORE</text>
+
+  <!-- ══ 01 · Playable Portfolio — live ═════════════════════ -->
+  <circle class="ping" style="animation-delay:1.5s" cx="700" cy="130" r="9"/>
+  <circle class="node-live fade" style="animation-delay:1.3s" cx="700" cy="130" r="4.5"/>
+  <text class="fade t-primary" style="animation-delay:1.3s" x="716" y="114" font-size="17" font-weight="600">Playable Portfolio</text>
+  <text class="mono fade t-micro" style="animation-delay:1.3s" x="716" y="156" font-size="10.5" font-weight="600" letter-spacing="1.5">3D &#183; CREATIVE</text>
+
+  <!-- ══ 02 · FORGE — live ══════════════════════════════════ -->
+  <circle class="ping" style="animation-delay:1.7s" cx="1120" cy="260" r="9"/>
+  <circle class="node-live fade" style="animation-delay:1.5s" cx="1120" cy="260" r="4.5"/>
+  <text class="fade t-primary" style="animation-delay:1.5s" x="1136" y="244" font-size="17" font-weight="600">FORGE</text>
+  <text class="mono fade t-micro" style="animation-delay:1.5s" x="1136" y="286" font-size="10.5" font-weight="600" letter-spacing="1.5">AI &#183; PRODUCT</text>
+
+  <!-- ══ 03 · HunarMart — private build ═════════════════════ -->
+  <circle class="node-priv fade" style="animation-delay:1.7s" cx="850" cy="400" r="4.5"/>
+  <text class="fade t-primary" style="animation-delay:1.7s" x="866" y="384" font-size="17" font-weight="600">HunarMart</text>
+  <text class="mono fade t-micro" style="animation-delay:1.7s" x="866" y="426" font-size="10.5" font-weight="600" letter-spacing="1.5">MARKETPLACE &#183; PRIVATE BUILD</text>
+
+  <!-- ══ 04 · Security Breach Simulator — open source ════════ -->
+  <circle class="node-src fade" style="animation-delay:1.9s" cx="1370" cy="500" r="4.5"/>
+  <text class="fade t-primary" style="animation-delay:1.9s" x="1354" y="484" text-anchor="end" font-size="17" font-weight="600">Security Breach Simulator</text>
+  <text class="mono fade t-micro" style="animation-delay:1.9s" x="1354" y="526" text-anchor="end" font-size="10.5" font-weight="600" letter-spacing="1.5">SECURITY &#183; PYTHON</text>
+
+  <!-- ══ 05 · nvim-plugin-marketplace — open source ═════════ -->
+  <circle class="node-src fade" style="animation-delay:2.05s" cx="640" cy="620" r="4.5"/>
+  <text class="fade t-primary" style="animation-delay:2.05s" x="656" y="604" font-size="17" font-weight="600">nvim-plugin-marketplace</text>
+  <text class="mono fade t-micro" style="animation-delay:2.05s" x="656" y="646" font-size="10.5" font-weight="600" letter-spacing="1.5">NEOVIM &#183; TOOLING</text>
+
+  <!-- ══ 06 · Stash — open source ══════════════════════════ -->
+  <circle class="node-src fade" style="animation-delay:2.2s" cx="1060" cy="680" r="4.5"/>
+  <text class="fade t-primary" style="animation-delay:2.2s" x="1076" y="664" font-size="17" font-weight="600">Stash</text>
+  <text class="mono fade t-micro" style="animation-delay:2.2s" x="1076" y="706" font-size="10.5" font-weight="600" letter-spacing="1.5">NATIVE &#183; MACOS</text>
+
+  <!-- ══ legend ═════════════════════════════════════════════ -->
+  <g class="mono fade" style="animation-delay:2.4s" font-size="10.5" font-weight="600" letter-spacing="1.5">
+    <circle class="node-live" cx="96" cy="732" r="3.5"/>
+    <text class="t-micro" x="106" y="736">live</text>
+    <circle class="node-src" cx="158" cy="732" r="3.5"/>
+    <text class="t-micro" x="168" y="736">open source</text>
+    <circle class="node-priv" cx="272" cy="732" r="3.5"/>
+    <text class="t-micro" x="282" y="736">private build</text>
+  </g>
+  <text class="mono fade t-micro" style="animation-delay:2.4s" x="1424" y="736" text-anchor="end" font-size="10.5" font-weight="600" letter-spacing="2">THE ECOSYSTEM — 2026</text>
+</svg>
