@@ -1,76 +1,130 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1520" height="560" viewBox="0 0 1520 560" role="img" aria-labelledby="heroTitle heroDesc" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
-  <title id="heroTitle">Taher Sohagpurwala — Full-Stack Product Engineer · AI/ML</title>
-  <desc id="heroDesc">Boot card for Taher Sohagpurwala, a full-stack product engineer and AI/ML builder in Mumbai. 6 live deployments, 20+ systems shipped. Status: all systems shipping. Domains: 3D/WebGPU, AI products, big data, macOS.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" width="1520" height="680" viewBox="0 0 1520 680" role="img" aria-labelledby="heroTitle heroDesc" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+  <title id="heroTitle">Taher Sohagpurwala — Product Engineer, AI/ML</title>
+  <desc id="heroDesc">Taher Sohagpurwala, a full-stack product engineer building AI/ML products, 3D web experiences, big-data platforms and macOS software. Domains orbit the name: 3D/WebGPU, AI products, big data, macOS. Build, ship, explore.</desc>
+
+  <defs>
+    <radialGradient id="glowCore" cx="50%" cy="50%" r="50%">
+      <stop class="g1" offset="0%" stop-color="#FF8A66" stop-opacity=".10"/>
+      <stop class="g2" offset="55%" stop-color="#FF8A66" stop-opacity=".03"/>
+      <stop class="g3" offset="100%" stop-color="#FF8A66" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="bgDepth" x1="0" y1="0" x2="0" y2="1">
+      <stop class="b1" offset="0%" stop-color="#101623" stop-opacity=".5"/>
+      <stop class="b2" offset="100%" stop-color="#0D1117" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
 
   <style>
-    /* ── palette (light default, dark via scheme) ─────────────── */
+    /* ── palette · light default ─────────────────────────────── */
     .bg        { fill:#ffffff; }
-    .t-primary { fill:#1f2328; }
-    .t-muted   { fill:#59636e; }
-    .t-faint   { fill:#6e7a87; }
-    .green     { fill:#1a7f37; }
-    .accent    { fill:#cf222e; }
-    .track     { fill:#e9edf1; }
+    .b1 stop-color { stop-color:#F2F4F7; } .b2 stop-color { stop-color:#ffffff; }
+    .g1 stop-color { stop-color:#D9482B; } .g2 stop-color { stop-color:#D9482B; } .g3 stop-color { stop-color:#D9482B; }
+    .g1 { stop-opacity:.05; } .g2 { stop-opacity:.02; }
+    .t-primary { fill:#1F2328; }
+    .t-secondary { fill:#575F6B; }
+    .t-micro   { fill:#8A93A0; }
+    .accent    { fill:#D9482B; }
+    .ring      { stroke:#1F2328; stroke-opacity:.14; fill:none; stroke-width:1.25; }
+    .ring-inner { stroke:#1F2328; stroke-opacity:.09; fill:none; stroke-width:1; }
+    .arc       { stroke:#D9482B; stroke-opacity:.38; fill:none; stroke-width:1.5; }
+    .flow      { stroke:#1F2328; stroke-opacity:.10; fill:none; stroke-width:1; }
+    .node      { fill:#D9482B; }
+    .particle  { fill:#1F2328; }
+    .particle-a { fill:#D9482B; }
 
     @media (prefers-color-scheme: dark) {
-      .bg        { fill:#0d1117; }
-      .t-primary { fill:#e6edf3; }
-      .t-muted   { fill:#9198a1; }
-      .t-faint   { fill:#768390; }
-      .green     { fill:#3fb950; }
-      .accent    { fill:#ff7752; }
-      .track     { fill:#21262d; }
+      .bg        { fill:#0D1117; }
+      .b1 stop-color { stop-color:#131A2A; } .b2 stop-color { stop-color:#0D1117; }
+      .g1 { stop-opacity:.10; } .g2 { stop-opacity:.035; }
+      .t-primary { fill:#E8EDF2; }
+      .t-secondary { fill:#9BA4AF; }
+      .t-micro   { fill:#6E7681; }
+      .accent    { fill:#FF8A66; }
+      .ring      { stroke:#E8EDF2; stroke-opacity:.16; }
+      .ring-inner { stroke:#E8EDF2; stroke-opacity:.10; }
+      .arc       { stroke:#FF8A66; stroke-opacity:.42; }
+      .flow      { stroke:#E8EDF2; stroke-opacity:.11; }
+      .node      { fill:#FF8A66; }
+      .particle  { fill:#E8EDF2; }
+      .particle-a { fill:#FF8A66; }
     }
 
-    /* ── motion: reveal once, then settle. Base state = final state,
-          so every element is visible when animations are disabled. ── */
-    .fade   { opacity:1; animation: rise .6s cubic-bezier(.2,.7,.3,1) backwards; }
-    .name   { opacity:1; animation: rise .8s cubic-bezier(.16,.8,.3,1) .65s backwards; }
-    .accentbar { width:150px;  animation: growbar .55s cubic-bezier(.2,.7,.3,1) 1.35s backwards; }
-    .bootbar   { width:1328px; animation: fillbar 1.1s cubic-bezier(.3,.5,.2,1) 2.5s backwards; }
-    .led       { opacity:1; animation: lightup .45s ease-out backwards; }
+    /* ── entrance: reveal once, then settle ──────────────────── */
+    .fade    { opacity:1; animation: rise .65s cubic-bezier(.2,.7,.3,1) backwards; }
+    .hero-name { opacity:1; animation: rise .9s cubic-bezier(.16,.8,.3,1) .9s backwards; }
+    .draw    { stroke-dasharray:100 100; stroke-dashoffset:0; animation: draw 1.3s cubic-bezier(.4,.1,.2,1) backwards; }
+    .draw-arc { stroke-dasharray:100 100; stroke-dashoffset:0; animation: draw 1.0s cubic-bezier(.4,.1,.2,1) backwards; }
 
-    @keyframes rise    { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
-    @keyframes growbar { from { width:0; } to { width:150px; } }
-    @keyframes fillbar { from { width:0; } to { width:1328px; } }
-    @keyframes lightup { from { opacity:.12; } to { opacity:1; } }
+    /* ── ambient: one slow breath, forever quiet ─────────────── */
+    .drift-a { animation: driftA 52s ease-in-out infinite alternate; }
+    .drift-b { animation: driftB 68s ease-in-out infinite alternate; }
+    .drift-c { animation: driftC 84s ease-in-out infinite alternate; }
+
+    @keyframes rise  { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes draw  { from { stroke-dashoffset:100; } to { stroke-dashoffset:0; } }
+    @keyframes driftA { from { transform:translate(0,0); opacity:.10; } to { transform:translate(16px,-20px); opacity:.30; } }
+    @keyframes driftB { from { transform:translate(0,0); opacity:.08; } to { transform:translate(-22px,14px); opacity:.24; } }
+    @keyframes driftC { from { transform:translate(0,0); opacity:.14; } to { transform:translate(10px,16px); opacity:.05; } }
 
     @media (prefers-reduced-motion: reduce) {
-      .fade, .name, .accentbar, .bootbar, .led { animation: none; }
+      .fade, .hero-name, .draw, .draw-arc { animation: none; }
+      .drift-a, .drift-b, .drift-c { animation: none; opacity:.18; }
     }
   </style>
 
-  <rect class="bg" width="1520" height="560"/>
+  <!-- ══ depth planes ══════════════════════════════════════ -->
+  <rect class="bg" width="1520" height="680"/>
+  <rect class="fade" style="animation-delay:.05s" width="1520" height="680" fill="url(#bgDepth)" opacity="1"/>
+  <ellipse class="fade" style="animation-delay:.15s" cx="760" cy="352" rx="560" ry="300" fill="url(#glowCore)"/>
 
-  <!-- ══ zone A · boot whisper ═══════════════════════════════ -->
-  <text class="fade" style="animation-delay:.05s" x="96" y="84" font-family="ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace" font-size="13.5"><tspan class="t-primary" font-weight="600">$ taher --init</tspan><tspan class="t-faint"> — 6 live · 20+ shipped · Mumbai, IN</tspan></text>
-  <text class="fade green" style="animation-delay:.45s" x="1424" y="84" text-anchor="end" font-family="ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace" font-size="13" font-weight="600" letter-spacing="2">&#9679; ONLINE</text>
+  <!-- ══ orbit system ══════════════════════════════════════ -->
+  <!-- outer orbit -->
+  <ellipse class="ring draw" pathLength="100" style="animation-delay:.35s" cx="760" cy="340" rx="560" ry="240"/>
+  <!-- accent arcs riding the outer orbit: top-right and bottom-left -->
+  <path class="arc draw-arc" pathLength="100" style="animation-delay:1.0s" d="M 1189 186 A 560 240 0 0 1 1320 340"/>
+  <path class="arc draw-arc" pathLength="100" style="animation-delay:1.15s" d="M 331 494 A 560 240 0 0 1 200 340"/>
+  <!-- inner orbit frames the name -->
+  <ellipse class="ring-inner draw" pathLength="100" style="animation-delay:.55s" cx="760" cy="340" rx="470" ry="196"/>
 
-  <!-- ══ zone B · identity ═══════════════════════════════════ -->
-  <text class="name t-primary" x="760" y="272" text-anchor="middle" font-size="84" font-weight="800" letter-spacing="2">TAHER SOHAGPURWALA</text>
+  <!-- ══ converging currents: edges → the work ═════════════ -->
+  <path class="flow draw" pathLength="100" style="animation-delay:.6s" d="M 40 80 C 340 140, 560 200, 700 250"/>
+  <path class="flow draw" pathLength="100" style="animation-delay:.75s" d="M 1480 600 C 1180 540, 960 480, 820 430"/>
+  <path class="flow draw" pathLength="100" style="animation-delay:.9s" d="M 60 560 C 300 470, 480 420, 600 380"/>
 
-  <text class="fade t-muted" style="animation-delay:1.05s" x="760" y="338" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace" font-size="19" font-weight="500" letter-spacing="6">FULL-STACK PRODUCT ENGINEER &#183; AI/ML</text>
-
-  <rect class="accentbar accent" x="685" y="368" width="150" height="5" rx="2.5"/>
-
-  <text class="fade green" style="animation-delay:1.65s" x="760" y="420" text-anchor="middle" font-family="ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace" font-size="15" font-weight="700" letter-spacing="3">&#9679; ALL SYSTEMS SHIPPING</text>
-
-  <!-- ══ zone C · supporting detail ═══════════════════════════ -->
-  <g font-family="ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace" font-size="13.5" font-weight="600" letter-spacing="1">
-    <circle class="led green" style="animation-delay:1.95s" cx="466" cy="463" r="4.5"/>
-    <text class="fade t-faint" style="animation-delay:1.95s" x="486" y="468">3D &#183; WEBGPU</text>
-
-    <circle class="led green" style="animation-delay:2.10s" cx="640" cy="463" r="4.5"/>
-    <text class="fade t-faint" style="animation-delay:2.10s" x="660" y="468">AI PRODUCTS</text>
-
-    <circle class="led green" style="animation-delay:2.25s" cx="814" cy="463" r="4.5"/>
-    <text class="fade t-faint" style="animation-delay:2.25s" x="834" y="468">BIG DATA</text>
-
-    <circle class="led green" style="animation-delay:2.40s" cx="962" cy="463" r="4.5"/>
-    <text class="fade t-faint" style="animation-delay:2.40s" x="982" y="468">MACOS &#183; SWIFT</text>
+  <!-- ══ data particles · designed drift, not stars ═════════ -->
+  <g>
+    <circle class="particle drift-a" style="animation-delay:-8s"  cx="180" cy="140" r="2"/>
+    <circle class="particle drift-b" style="animation-delay:-30s" cx="330" cy="90"  r="1.5"/>
+    <circle class="particle-a drift-a" style="animation-delay:-14s" cx="1210" cy="120" r="2.4"/>
+    <circle class="particle drift-c" style="animation-delay:-40s" cx="1380" cy="230" r="1.6"/>
+    <circle class="particle drift-b" style="animation-delay:-6s"  cx="1290" cy="600" r="2"/>
+    <circle class="particle-a drift-c" style="animation-delay:-22s" cx="240" cy="600" r="2.2"/>
+    <circle class="particle drift-a" style="animation-delay:-36s" cx="90"  cy="380" r="1.4"/>
+    <circle class="particle drift-c" style="animation-delay:-2s"  cx="1440" cy="460" r="1.8"/>
+    <circle class="particle drift-b" style="animation-delay:-18s" cx="560" cy="70"  r="1.6"/>
+    <circle class="particle-a drift-b" style="animation-delay:-46s" cx="1010" cy="620" r="2"/>
+    <circle class="particle drift-a" style="animation-delay:-28s" cx="760" cy="88"  r="1.5"/>
+    <circle class="particle drift-c" style="animation-delay:-12s" cx="470" cy="640" r="1.4"/>
   </g>
 
-  <!-- ══ boot end · hairline fills once, then still ═══════════ -->
-  <rect class="track fade" style="animation-delay:2.40s" x="96" y="534" width="1328" height="2.5" rx="1.25"/>
-  <rect class="bootbar accent" x="96" y="534" width="1328" height="2.5" rx="1.25"/>
+  <!-- ══ identity ══════════════════════════════════════════ -->
+  <text class="hero-name t-primary" x="760" y="352" text-anchor="middle" font-size="148" font-weight="800" letter-spacing="6">TAHER</text>
+  <text class="fade t-primary" style="animation-delay:1.35s" x="760" y="424" text-anchor="middle" font-size="42" font-weight="700" letter-spacing="24">SOHAGPURWALA</text>
+  <text class="fade t-secondary" style="animation-delay:1.75s" x="760" y="486" text-anchor="middle" font-size="15.5" font-weight="500" letter-spacing="7">FULL-STACK PRODUCT ENGINEER &#183; AI / ML</text>
+  <text class="fade t-micro" style="animation-delay:2.15s" x="760" y="552" text-anchor="middle" font-size="12.5" font-weight="600" letter-spacing="10">BUILD &#183; SHIP &#183; EXPLORE</text>
+
+  <!-- ══ domain nodes on the outer orbit ═══════════════════ -->
+  <g font-family="ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace" font-size="12" font-weight="600" letter-spacing="1.5">
+    <circle class="node fade" style="animation-delay:1.9s" cx="1189" cy="186" r="4"/>
+    <text class="fade t-micro" style="animation-delay:1.9s" x="1189" y="162" text-anchor="middle">3D &#183; WEBGPU</text>
+
+    <circle class="node fade" style="animation-delay:2.05s" cx="331" cy="186" r="4"/>
+    <text class="fade t-micro" style="animation-delay:2.05s" x="331" y="162" text-anchor="middle">AI PRODUCTS</text>
+
+    <circle class="node fade" style="animation-delay:2.2s" cx="1189" cy="494" r="4"/>
+    <text class="fade t-micro" style="animation-delay:2.2s" x="1189" y="524" text-anchor="middle">BIG DATA</text>
+
+    <circle class="node fade" style="animation-delay:2.35s" cx="331" cy="494" r="4"/>
+    <text class="fade t-micro" style="animation-delay:2.35s" x="331" y="524" text-anchor="middle">MACOS &#183; SWIFT</text>
+  </g>
 </svg>
