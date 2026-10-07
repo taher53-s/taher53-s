@@ -68,7 +68,7 @@ Every node is a real system built end to end, and all of them connect to the sam
 ## 04 · Activity
 
 <p align="center">
-  <img src="assets/activity.svg" alt="Contribution activity for the last 12 months: 190 contributions, 26 active days, longest streak 4 days, busiest month October 2026, weekly pulse peaking at 40." width="100%">
+  <img src="assets/activity.svg" alt="Contribution activity for the last 12 months, generated live from the GitHub GraphQL API: contribution grid, active days, longest streak, busiest month, and a weekly pulse line with its peak." width="100%">
 </p>
 
 Generated from the GitHub GraphQL API by [`scripts/generate_activity.py`](scripts/generate_activity.py) and refreshed weekly by [GitHub Actions](.github/workflows/profile-update.yml) — every number computed from real data, no third-party stat cards.
