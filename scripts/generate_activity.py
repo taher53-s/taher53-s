@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
 """
-generate_activity.py — custom contribution visualization for the profile README.
+generate_activity.py — generative contribution visualization for the profile.
 
 Fetches the last 12 months of public contribution data for the profile owner
 via the GitHub GraphQL API and renders a self-contained, dual-mode (light/dark)
 animated SVG at assets/activity.svg.
 
-Design goals
+Design: a full-bleed data composition — accent-scaled contribution cells that
+reveal sequentially, a weekly activity pulse line drawn from real data with a
+peak marker, and computed statistics. No third-party stat-card services.
+
+Engineering goals
   * stdlib only (urllib, json, xml) — no pip dependencies
   * NEVER destroy a valid existing asset when a fetch fails:
       - all network + parsing + rendering happens into a temp file
@@ -55,17 +59,19 @@ query($login: String!) {
 }
 """
 
-# GitHub's own calendar scales — instantly readable, semantically "activity".
-SCALE_LIGHT = ["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"]
-SCALE_DARK = ["#151b22", "#033a16", "#0e4429", "#006d32", "#26a641"]
+# Signature vermilion scale — the profile's single accent.
+SCALE_LIGHT = ["#EFECE8", "#F5C6B5", "#EE9E82", "#E56A45", "#D9482B"]
+SCALE_DARK = ["#1A1E24", "#542F22", "#8A4630", "#C25E3E", "#FF8A66"]
 LEVEL_FRAC = [0, 1, 3, 6]  # min contributions for levels 1..3 (4 = above)
 
 MONO = "ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace"
 SANS = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
 
-W, H = 1040, 268
-CELL, GAP = 13.5, 3.2
-GRID_X, GRID_Y = 52, 130
+W, H = 1040, 376
+CELL, GAP = 14, 3.2
+GRID_X, GRID_Y = 52, 208
+SPARK_X0, SPARK_X1 = 52, 942
+SPARK_TOP, SPARK_BOTTOM = 132, 176
 MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
@@ -207,109 +213,143 @@ def esc(s: str) -> str:
 
 def render(user: str, data: dict, stats: dict) -> str:
     days = data["days"]
+    today = dt.date.today()
     step = CELL + GAP
     grid_w = 52 * step - GAP
-    today = dt.date.today()
 
+    # ── grid cells + month labels ────────────────────────────────────────
     cells, month_labels = [], []
     last_label_x, last_m = -10_000, None
-    for wi, week in enumerate([days[i * 7:(i + 1) * 7] for i in range((len(days) + 6) // 7)]):
+    weeks = [days[i * 7:(i + 1) * 7] for i in range((len(days) + 6) // 7)]
+    for wi, week in enumerate(weeks):
         x = GRID_X + wi * step
+        col_delay = 0.15 + wi * 0.016  # sequential reveal, left → right
         seen_month = None
         for di, (d, c) in enumerate(week):
             y = GRID_Y + di * step
-            lvl = level(c)
-            fill = f"L{lvl}"
             cells.append(
-                f'<rect class="{fill}" x="{x:.1f}" y="{y:.1f}" '
-                f'width="{CELL}" height="{CELL}" rx="3"><title>{d.isoformat()} · '
-                f'{c} contribution{"s" if c != 1 else ""}</title></rect>')
+                f'<rect class="cell L{level(c)}" style="animation-delay:{col_delay:.2f}s" '
+                f'x="{x:.1f}" y="{y:.1f}" width="{CELL}" height="{CELL}" rx="3">'
+                f'<title>{d.isoformat()} · {c} contribution{"s" if c != 1 else ""}</title></rect>')
             if d.day <= 7:
                 seen_month = (d.month, d.year)
         if seen_month and seen_month != last_m and x - last_label_x >= 58:
             month_labels.append(
-                f'<text class="t-faint" x="{x:.1f}" y="{GRID_Y - 10}" '
-                f'font-family="{MONO}" font-size="11" font-weight="600">'
+                f'<text class="t-micro" x="{x:.1f}" y="{GRID_Y - 12}" '
+                f'font-family="{MONO}" font-size="10.5" font-weight="600">'
                 f'{MONTH_NAMES[seen_month[0] - 1]}</text>')
             last_label_x, last_m = x, seen_month
 
     weekday_tags = "".join(
-        f'<text class="t-faint" x="{GRID_X - 12}" y="{GRID_Y + 9 + row * step}" '
+        f'<text class="t-micro" x="{GRID_X - 12}" y="{GRID_Y + 10 + row * step}" '
         f'text-anchor="end" font-family="{MONO}" font-size="10.5">'
         f'{label}</text>'
         for row, label in ((0, "Mon"), (2, "Wed"), (4, "Fri"))
     )
 
-    def chips(items):
-        out, x = [], 52
-        for value, label in items:
-            text = f"{value} {label}"
-            w = 7.2 * len(text) + 26
-            out.append(
-                f'<g class="chip"><rect x="{x:.0f}" y="76" width="{w:.0f}" '
-                f'height="26" rx="13" class="chipbg"/>'
-                f'<text class="t-primary" x="{x + w / 2:.0f}" y="93" '
-                f'text-anchor="middle" font-family="{MONO}" font-size="12.5" '
-                f'font-weight="600">{esc(value)} <tspan class="t-muted">{esc(label)}</tspan></text></g>')
-            x += w + 10
-        return "".join(out)
+    # ── weekly pulse line (real data only) ──────────────────────────────
+    weekly = [sum(c for _, c in w) for w in weeks]
+    while len(weekly) < 52:
+        weekly.append(0)
+    wmax = max(weekly)
+    n = len(weekly)
+    px = lambda i: SPARK_X0 + i * (SPARK_X1 - SPARK_X0) / max(n - 1, 1)
+    py = lambda v: (SPARK_BOTTOM if wmax == 0
+                    else SPARK_BOTTOM - (v / wmax) * (SPARK_BOTTOM - SPARK_TOP))
+    points = " ".join(f"{px(i):.1f},{py(v):.1f}" for i, v in enumerate(weekly))
+    area = (f"M {SPARK_X0},{SPARK_BOTTOM} L " +
+            " L ".join(f"{px(i):.1f},{py(v):.1f}" for i, v in enumerate(weekly)) +
+            f" L {px(n - 1):.1f},{SPARK_BOTTOM} Z")
+    spark_peak = ""
+    if wmax > 0:
+        pi = weekly.index(wmax)
+        # find the date of the peak week (its most recent day)
+        peak_date = weeks[pi][-1][0] if pi < len(weeks) else today
+        peak_x, peak_y = px(pi), py(wmax)
+        label_y = max(peak_y - 14, 118)
+        label_x = min(max(peak_x, 110), 930)
+        spark_peak = (
+            f'<circle class="fade peakdot" cx="{peak_x:.1f}" cy="{peak_y:.1f}" r="3.2"/>'
+            f'<text class="fade t-micro" style="animation-delay:1.5s" x="{label_x:.1f}" '
+            f'y="{label_y:.0f}" text-anchor="middle" font-family="{MONO}" '
+            f'font-size="10" font-weight="600" letter-spacing="1">peak · {wmax} · '
+            f'{MONTH_NAMES[peak_date.month - 1]} {peak_date.day}</text>')
 
-    header_chips = chips([
-        (f"{stats['total']}", "contributions"),
-        (f"{stats['active_days']}", "active days"),
-        (f"{stats['longest_streak']}d", "longest streak"),
-        (f"{stats['busiest_month']}", "busiest month"),
-    ])
+    # ── stat chips ───────────────────────────────────────────────────────
+    chips, x = [], 52
+    for value, label in ((f"{stats['total']}", "contributions"),
+                         (f"{stats['active_days']}", "active days"),
+                         (f"{stats['longest_streak']}d", "longest streak"),
+                         (f"{stats['busiest_month']}", "busiest month")):
+        text = f"{value} {label}"
+        w = 7.4 * len(text) + 28
+        chips.append(
+            f'<g class="fade" style="animation-delay:1.25s"><rect x="{x:.0f}" y="82" '
+            f'width="{w:.0f}" height="28" rx="14" class="chip"/>'
+            f'<text class="t-primary" x="{x + w / 2:.0f}" y="100" text-anchor="middle" '
+            f'font-family="{MONO}" font-size="12.5" font-weight="700">{esc(value)} '
+            f'<tspan class="t-micro" font-weight="600">{esc(label)}</tspan></text></g>')
+        x += w + 10
 
     svg = f"""<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-labelledby="actTitle actDesc" font-family="{SANS}">
   <title id="actTitle">Contribution activity — {esc(user)}, last 12 months</title>
-  <desc id="actDesc">Custom-generated contribution calendar: {stats['total']} contributions across {stats['active_days']} active days; longest streak {stats['longest_streak']} days; busiest month {stats['busiest_month']}.</desc>
+  <desc id="actDesc">Custom-generated contribution calendar: {stats['total']} contributions across {stats['active_days']} active days; longest streak {stats['longest_streak']} days; busiest month {stats['busiest_month']}; weekly pulse peaking at {wmax}.</desc>
 
   <style>
     .bg {{ fill:#ffffff; }}
-    .card {{ fill:#ffffff; stroke:#d0d7de; stroke-width:1.5; }}
-    .t-primary {{ fill:#1f2328; }} .t-muted {{ fill:#59636e; }} .t-faint {{ fill:#818b98; }}
-    .chipbg {{ fill:#f6f8fa; stroke:#d0d7de; stroke-width:1; }}
-    .L0 {{ fill:#ebedf0; }} .L1 {{ fill:#9be9a8; }} .L2 {{ fill:#40c463; }}
-    .L3 {{ fill:#30a14e; }} .L4 {{ fill:#216e39; }}
+    .t-primary {{ fill:#1F2328; }} .t-micro {{ fill:#8A93A0; }}
+    .accent {{ fill:#D9482B; }}
+    .chip {{ fill:#F5F3F0; stroke:#E4E2DE; stroke-width:1; }}
+    .hairline {{ stroke:#1F2328; stroke-opacity:.10; stroke-width:1; }}
+    .spark {{ stroke:#D9482B; stroke-width:1.75; fill:none; }}
+    .sparkarea {{ fill:#D9482B; fill-opacity:.06; }}
+    .peakdot {{ fill:#D9482B; animation: rise .5s ease 1.35s backwards; }}
+    .L0 {{ fill:#EFECE8; }} .L1 {{ fill:#F5C6B5; }} .L2 {{ fill:#EE9E82; }}
+    .L3 {{ fill:#E56A45; }} .L4 {{ fill:#D9482B; }}
     @media (prefers-color-scheme: dark) {{
-      .bg {{ fill:#0d1117; }} .card {{ fill:#151b23; stroke:#30363d; stroke-width:1.5; }}
-      .t-primary {{ fill:#e6edf3; }} .t-muted {{ fill:#9198a1; }} .t-faint {{ fill:#6e7681; }}
-      .chipbg {{ fill:#1c2129; stroke:#30363d; stroke-width:1; }}
-      .L0 {{ fill:#22272e; }} .L1 {{ fill:#033a16; }} .L2 {{ fill:#0e4429; }}
-      .L3 {{ fill:#006d32; }} .L4 {{ fill:#26a641; }}
+      .bg {{ fill:#0D1117; }}
+      .t-primary {{ fill:#E8EDF2; }} .t-micro {{ fill:#6E7681; }}
+      .accent {{ fill:#FF8A66; }}
+      .chip {{ fill:#161B22; stroke:#262B33; stroke-width:1; }}
+      .hairline {{ stroke:#E8EDF2; stroke-opacity:.10; }}
+      .spark {{ stroke:#FF8A66; }}
+      .sparkarea {{ fill:#FF8A66; fill-opacity:.07; }}
+      .peakdot {{ fill:#FF8A66; }}
+      .L0 {{ fill:#1A1E24; }} .L1 {{ fill:#542F22; }} .L2 {{ fill:#8A4630; }}
+      .L3 {{ fill:#C25E3E; }} .L4 {{ fill:#FF8A66; }}
     }}
-    .gridfx {{ opacity:1; animation: appear .8s cubic-bezier(.2,.7,.3,1) .15s backwards; }}
-    .sweep {{ opacity:0; animation: sweep 1.3s cubic-bezier(.4,.1,.3,1) .3s forwards; }}
-    @keyframes appear {{ from {{ opacity:0; }} to {{ opacity:1; }} }}
-    @keyframes sweep {{
-      0% {{ opacity:.10; transform:translateX(0); }}
-      92% {{ opacity:.10; transform:translateX({grid_w:.0f}px); }}
-      100% {{ opacity:0; transform:translateX({grid_w:.0f}px); }}
-    }}
+    .fade {{ opacity:1; animation: rise .5s ease backwards; }}
+    .cell {{ opacity:1; animation: cellin .35s ease backwards; }}
+    .draw {{ stroke-dasharray:100 100; stroke-dashoffset:0; animation: draw 1.2s cubic-bezier(.4,.1,.2,1) .7s backwards; }}
+    @keyframes rise {{ from {{ opacity:0; transform:translateY(8px); }} to {{ opacity:1; transform:translateY(0); }} }}
+    @keyframes cellin {{ from {{ opacity:0; }} to {{ opacity:1; }} }}
+    @keyframes draw {{ from {{ stroke-dashoffset:100; }} to {{ stroke-dashoffset:0; }} }}
     @media (prefers-reduced-motion: reduce) {{
-      .gridfx, .sweep {{ animation: none; }}
+      .fade, .cell, .draw, .peakdot {{ animation: none; }}
     }}
   </style>
 
   <rect class="bg" width="{W}" height="{H}"/>
-  <rect class="card" x="8" y="8" width="1024" height="252" rx="14"/>
 
-  <text class="t-primary" x="52" y="42" font-family="{MONO}" font-size="13.5" font-weight="700" letter-spacing="2.5">CONTRIBUTION ACTIVITY — LAST 12 MONTHS</text>
-  <text class="t-faint" x="52" y="62" font-family="{MONO}" font-size="11.5">sourced live from the GitHub GraphQL API — no third-party stat cards</text>
+  <text class="fade t-primary" style="animation-delay:.05s" x="52" y="44" font-family="{MONO}" font-size="14" font-weight="700" letter-spacing="2.5">CONTRIBUTION ACTIVITY — LAST 12 MONTHS</text>
+  <text class="fade t-micro" style="animation-delay:.15s" x="52" y="66" font-family="{MONO}" font-size="11" font-weight="500" letter-spacing=".5">sourced live from the GitHub GraphQL API · no third-party stat cards</text>
 
-  {header_chips}
+  {''.join(chips)}
+
+  <!-- weekly pulse — real data -->
+  <path class="sparkarea fade" style="animation-delay:.9s" d="{area}"/>
+  <path class="spark draw" pathLength="100" d="M {points}"/>
+  {spark_peak}
 
   {weekday_tags}
   {month_labels}
-  <g class="gridfx">
+  <g class="cellgroup">
   {''.join(cells)}
   </g>
-  <rect class="sweep" x="{GRID_X}" y="{GRID_Y}" width="3" height="102" rx="1.5" fill="#1f2328" opacity="0"/>
 
-  <g font-family="{MONO}" font-size="11.5" font-weight="600">
-    <text class="t-faint" x="52" y="250">generated {today.isoformat()} · auto-refreshed weekly</text>
-    <text class="t-faint" x="988" y="250" text-anchor="end">github.com/{esc(user)}</text>
+  <g font-family="{MONO}" font-size="11" font-weight="500" letter-spacing=".5">
+    <text class="fade t-micro" style="animation-delay:1.6s" x="52" y="358">generated {today.isoformat()} · auto-refreshed weekly</text>
+    <text class="fade t-micro" style="animation-delay:1.6s" x="988" y="358" text-anchor="end">github.com/{esc(user)}</text>
   </g>
 </svg>
 """
