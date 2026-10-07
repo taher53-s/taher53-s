@@ -52,7 +52,7 @@ def check(name: str, ok: bool, detail: str = "") -> None:
 
 def main() -> int:
     # 1 ── XML validity
-    for svg in ("assets/hero.svg", "assets/activity.svg"):
+    for svg in ("assets/hero.svg", "assets/project-map.svg", "assets/activity.svg"):
         path = os.path.join(ROOT, svg)
         try:
             xml.dom.minidom.parse(path)

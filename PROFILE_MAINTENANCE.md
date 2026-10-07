@@ -4,7 +4,8 @@ This profile is a **small system, not a document**. Three moving parts:
 
 ```
 data/profile.yml          ← YOU edit this (status, projects, links)
-assets/hero.svg           ← hand-crafted, static (edit with care)
+assets/hero.svg           ← hand-drawn orbital hero (edit with care)
+assets/project-map.svg    ← hand-drawn systems map (edit with care)
 assets/activity.svg       ← GENERATED — never edit by hand
 scripts/generate_activity.py  ← fetches real data, renders activity.svg
 scripts/build_readme.py       ← renders the status table into README.md
@@ -107,14 +108,21 @@ re-trigger it — no recursion, no commit loops.
 
 ## Design notes (why it looks like this)
 
-- **Boot-card concept:** the hero frames the profile as a system coming
-  online — it mirrors the product language in the actual work
-  (FORGE, Mission Control, Playable Portfolio).
-- **Dual-mode:** both SVGs ship light and dark palettes via
-  `prefers-color-scheme` media queries inside the SVG — GitHub honors them
-  in both README rendering contexts.
-- **Motion rules:** animations play once on load, then settle. No infinite
-  loops, no flashing. `prefers-reduced-motion` disables all of it — the
-  static state is the final state, so nothing is ever hidden for good.
+- **"Orbital System Atlas" concept:** the profile reads as a designed atlas of
+  one engineer's work — an orbital hero, a systems map of real products, and
+  generative activity art. It echoes the flagship project (a drivable world of
+  districts) rather than a terminal/console cliché.
+- **One signature accent:** vermilion in light mode (`#D9482B`), coral in dark
+  (`#FF8A66`) — carried across the hero, the systems map, the contribution cells
+  and the activity pulse line. Green is reserved strictly for "live" semantics.
+- **Dual-mode as two art directions:** dark is deep and cinematic, light is
+  editorial and clean — both share the same geometry, type and accent.
+- **Motion that settles:** every animation is a one-time reveal (draw-in,
+  staggered entrances, one-time pings). The only continuous motion is an
+  ultra-slow particle drift in the hero (50–84s cycles). `prefers-reduced-motion`
+  disables all of it — every element's base state is its final state.
 - **No third-party stat-card services:** everything renders from raw SVG in
   this repo. The profile can never be broken by an external badge API.
+- **README chapters are numbered (01–07); project entries are unnumbered to
+  keep a single numbering system.** GitHub's H2 rule doubles as section
+  dividers.

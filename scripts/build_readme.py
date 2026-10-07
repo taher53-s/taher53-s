@@ -40,12 +40,12 @@ def render_block(now: dict) -> str:
     ]
 
     lines = [
-        "| status |  |",
+        "| now | focus |",
         "|---|---|",
     ]
     for label, _key, items in rows:
         joined = " · ".join(items) if items else "—"
-        lines.append(f"| **`{label}`** | {joined} |")
+        lines.append(f"| **{label}** | {joined} |")
     return "\n".join(lines)
 
 
